@@ -14,16 +14,6 @@ export function hookWindow(win = window) {
   win.localStorage.setItem("ctct.disabled", "1");
   // 设置云电脑纵向列表展示
   win.localStorage.setItem("currentDirection", "1");
-  win.Object.defineProperty(win, "innerWidth", {
-    value: screen.width,
-    writable: false,
-    configurable: false,
-  });
-  win.Object.defineProperty(win, "innerHeight", {
-    value: screen.height,
-    writable: false,
-    configurable: false,
-  });
   win.ctct = win.ctct || {};
   Object.assign(win.ctct, {
     identify: () => {},
@@ -115,8 +105,9 @@ function _keepalive(
         ssl: true,
         key: desktopInfo.clientKey,
         screen: {
-          w: (unsafeWindow || window).innerWidth,
-          h: (unsafeWindow || window).innerHeight,
+          // 云桌面分辨率独立设置，保留网页原生的窗口尺寸供响应式布局使用。
+          w: (unsafeWindow || window).screen.width,
+          h: (unsafeWindow || window).screen.height,
         },
         desktopId: desktopInfo.desktopId,
         token: desktopInfo.token,

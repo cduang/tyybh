@@ -29,13 +29,13 @@
 1. 安装 Tampermonkey、Violentmonkey 或其他兼容的用户脚本管理器。
 2. 打开以下地址并确认安装：
 
-   <https://4x25.github.io/CTYunPCKeepAlive/user-script.user.js>
+   <https://raw.githubusercontent.com/cduang/tyybh/dist/user-script.user.js>
 
 3. 访问 <https://pc.ctyun.cn/> 并完成登录。
 
 ### 方式二：Windows 桌面客户端（Electron）
 
-从 [GitHub Releases](https://github.com/4x25/CTYunPCKeepAlive/releases) 下载对应版本安装包或便携版，双击运行即可。客户端同样保持最新用户脚本逻辑。
+从 [GitHub Releases](https://github.com/cduang/tyybh/releases) 下载对应版本安装包或便携版，双击运行即可。客户端同样保持最新用户脚本逻辑。
 
 > 国内访问 GitHub 较慢时，可通过代理加速站下载，例如：
 > <https://github.404.vin> · <https://gh.llkk.cc> · <https://gh-proxy.net> · <https://edgeone.gh-proxy.org> · <https://cdn.gh-proxy.org> · <https://hk.gh-proxy.org> · <https://gh-proxy.org>
@@ -91,7 +91,7 @@ CTYunPCKeepAlive/
 
 ## 问题反馈
 
-如有问题或建议，欢迎在 [Issues](https://github.com/4x25/CTYunPCKeepAlive/issues) 中提交。
+如有问题或建议，欢迎在 [Issues](https://github.com/cduang/tyybh/issues) 中提交。
 
 ## 免责声明
 

@@ -2,6 +2,11 @@ name: Release
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "UserScript/**"
+      - ".github/workflows/release.yml"
     tags:
       - "v*"
   workflow_dispatch:
@@ -13,11 +18,15 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   # ── Job 1: 构建用户脚本并发布到 dist 分支 ───────────────────────────
   # dist 分支同时服务两个地址：
-  #   - GitHub Pages 安装地址 https://4x25.github.io/CTYunPCKeepAlive/user-script.user.js
-  #   - Electron preload 的 raw 地址（https://github.com/4x25/CTYunPCKeepAlive/raw/refs/heads/dist/user-script.user.js，经代理加速）
+  #   - 用户脚本安装地址 https://raw.githubusercontent.com/cduang/tyybh/dist/user-script.user.js
+  #   - Electron preload 的 raw 地址（https://github.com/cduang/tyybh/raw/refs/heads/dist/user-script.user.js，经代理加速）
   userscript:
     name: Build & publish UserScript
     runs-on: ubuntu-latest
@@ -43,7 +52,7 @@ jobs:
       - name: Resolve tag
         id: meta
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
           else
             echo "tag=${{ github.event.inputs.tag_name }}" >> "$GITHUB_OUTPUT"
@@ -82,6 +91,7 @@ jobs:
   # ── Job 2: 构建 Electron Windows x64 并上传 Release ────────────────
   electron:
     name: Build Electron & upload Release
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     needs: userscript
     runs-on: windows-latest
     steps:

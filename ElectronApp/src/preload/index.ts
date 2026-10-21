@@ -37,7 +37,9 @@ main#CTYunPCKeepAlive + div#app::before {
   (document.head || document.documentElement).appendChild(style);
 
   try {
-    const jsCode = await fetch("http://127.0.0.1:5173/__vite-plugin-monkey.install.user.js")
+    const jsCode = await fetch("http://127.0.0.1:5173/__vite-plugin-monkey.install.user.js", {
+      signal: AbortSignal.timeout(2000),
+    })
       .then((res) => res.text())
       .then((text) => {
         if (text.trim().startsWith("// ==UserScript==")) {
@@ -59,8 +61,9 @@ main#CTYunPCKeepAlive + div#app::before {
           ].map((proxy) =>
             fetch(
               proxy +
-                "/https://github.com/4x25/CTYunPCKeepAlive/raw/refs/heads/dist/user-script.user.js?_=" +
+                "/https://github.com/cduang/tyybh/raw/refs/heads/dist/user-script.user.js?_=" +
                 Date.now(),
+              { signal: AbortSignal.timeout(15000) },
             )
               .then((res) => res.text())
               .then((text) => {

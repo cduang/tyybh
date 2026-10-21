@@ -1,9 +1,9 @@
 {
   "name": "user-script",
-  "version": "2026.09.16",
+  "version": "2026.10.21",
   "license": "MIT",
   "type": "module",
-  "pageUrl": "https://4x25.github.io/CTYunPCKeepAlive",
+  "pageUrl": "https://raw.githubusercontent.com/cduang/tyybh/dist",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

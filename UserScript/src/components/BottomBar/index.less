@@ -1,10 +1,27 @@
 main#CTYunPCKeepAlive {
   .bottom-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 999;
+    flex-shrink: 0;
+    margin-top: auto;
+    width: 100%;
+    min-width: 0;
+    background: #fff;
+    border-top: 1px solid #f0f0f0;
     border-radius: 0;
+
+    > .ant-btn:first-child {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+
+      > span:not(.ant-btn-icon) {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    > .ant-btn:last-child {
+      flex-shrink: 0;
+    }
   }
 }

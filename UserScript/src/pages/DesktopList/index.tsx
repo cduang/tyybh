@@ -106,8 +106,8 @@ const DesktopList: FC<{}> = ({}) => {
       <div className="desktop-list">
         <CountdownProgress interval={interval} onEnd={onCountdownEnd} />
 
-        <Flex vertical gap={12}>
-          <Flex align="center" justify="flex-end" gap={12}>
+        <div className="desktop-content">
+          <Flex className="desktop-toolbar" align="center" justify="flex-end" gap={12}>
             {typeof document.getElementById("app")?.__vue_app__?.config
               .globalProperties.$dialog.open === "function" && (
               <Button
@@ -130,6 +130,13 @@ const DesktopList: FC<{}> = ({}) => {
             <Popover
               trigger="click"
               placement="bottomRight"
+              styles={{
+                body: {
+                  maxWidth: "calc(100vw - 24px)",
+                  maxHeight: "calc(100dvh - 24px)",
+                  overflowY: "auto",
+                },
+              }}
               content={
                 <Flex orientation="vertical" gap={12}>
                   <Flex align="center" justify="space-between">
@@ -227,16 +234,18 @@ const DesktopList: FC<{}> = ({}) => {
                 </Flex>
               }
             >
-              <Button type="primary" icon={<SettingOutlined />} />
+              <Button type="primary" aria-label="设置" icon={<SettingOutlined />} />
             </Popover>
           </Flex>
 
           <Spin spinning={loading && !data?.length}>
-            {data?.map((item) => (
-              <DesktopListItem key={item.id} data={item} />
-            ))}
+            <div className="desktop-grid">
+              {data?.map((item) => (
+                <DesktopListItem key={item.id} data={item} />
+              ))}
+            </div>
           </Spin>
-        </Flex>
+        </div>
       </div>
 
       <LoginDrawer

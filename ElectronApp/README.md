@@ -16,7 +16,7 @@ http://127.0.0.1:5173/__vite-plugin-monkey.install.user.js
 - 如果本地开发服务不可用，会通过预设的 GitHub 代理地址加载远程发布版本：
 
 ```text
-https://github.com/4x25/CTYunPCKeepAlive/raw/refs/heads/dist/user-script.user.js
+https://github.com/cduang/tyybh/raw/refs/heads/dist/user-script.user.js
 ```
 
 - 注入前会显示加载遮罩；用户脚本挂载成功后遮罩自动消失。
@@ -89,3 +89,12 @@ ElectronApp/
 - Closing the window or clicking minimize hides it from the taskbar and keeps the process in the Windows notification area.
 - Click the tray icon to restore the window. Use the tray menu's `Exit` item to terminate the process.
 - The tray menu contains a `Start at login` checkbox backed by the Windows login-item registration.
+
+## 窗口自适应
+
+- 页面使用真实窗口尺寸，云桌面 SDK 的屏幕分辨率独立设置。
+- 桌面列表随窗口宽度自动切换列数；窄窗口中的长名称和状态自动换行。
+- 列表独立滚动，底部版本与日志栏不再遮挡最后一项；登录页保留原网页交互。
+- 客户端从 `cduang/tyybh` 的 `dist` 分支加载脚本。本地开发服务请求超时为 2 秒，远程请求超时为 15 秒。
+- 推送 `main` 下的用户脚本变更会自动构建并更新 `dist`；客户端安装包仍通过版本标签或手动工作流发布。
+- 已安装且仍指向上游仓库的旧客户端需要更新客户端，才能加载本仓库的脚本。首次切换后，后续脚本更新可通过刷新页面加载。

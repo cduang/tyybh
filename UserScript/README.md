@@ -9,7 +9,7 @@ CTYunPCKeepAlive 的核心业务模块。脚本运行在天翼云电脑网页中
 1. 安装 Tampermonkey、Violentmonkey 或其他兼容的用户脚本管理器。
 2. 打开以下地址并确认安装：
 
-   https://4x25.github.io/CTYunPCKeepAlive/user-script.user.js
+   https://raw.githubusercontent.com/cduang/tyybh/dist/user-script.user.js
 
 3. 访问 https://pc.ctyun.cn/ 并完成登录。
 

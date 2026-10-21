@@ -15,7 +15,7 @@ const BottomBar: FC<{}> = ({}) => {
     async () => {
       const res = await Promise.any(
         [
-          "https://api.github.com/repos/4x25/CTYunPCKeepAlive/releases/latest",
+          "https://api.github.com/repos/cduang/tyybh/releases/latest",
         ].map((url) =>
           fetch(url, { mode: "cors", cache: "no-cache" }).then((res) =>
             res.json(),
@@ -69,8 +69,8 @@ const BottomBar: FC<{}> = ({}) => {
           href={
             hasUpdate
               ? data?.html_url ||
-                "//github.com/4x25/CTYunPCKeepAlive/releases/tag/v1.1.0"
-              : `//github.com/4x25/CTYunPCKeepAlive/releases/tag/@${scriptVersion}`
+                "https://github.com/cduang/tyybh/releases/latest"
+              : "https://github.com/cduang/tyybh"
           }
         >
           {hasUpdate ? (
@@ -84,6 +84,7 @@ const BottomBar: FC<{}> = ({}) => {
           <Button
             style={{ borderRadius: 0 }}
             type="text"
+            aria-label="运行日志"
             icon={<BugTwoTone />}
             onClick={() => setLogVisible(true)}
           />
