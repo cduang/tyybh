@@ -61,8 +61,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B dist origin/dist
-          cp UserScript/dist/user-script.user.js user-script.user.js
+          publish_dir=$(mktemp -d)
+          if git show-ref --verify --quiet refs/remotes/origin/dist; then
+            git worktree add -B dist "$publish_dir" origin/dist
+          else
+            git worktree add --detach "$publish_dir" HEAD
+            git -C "$publish_dir" checkout --orphan dist
+            git -C "$publish_dir" rm -rf .
+          fi
+          cp UserScript/dist/user-script.user.js "$publish_dir/user-script.user.js"
+          cd "$publish_dir"
           git add user-script.user.js
           if git diff --cached --quiet; then
             echo "user-script.user.js 无变化，跳过提交"
