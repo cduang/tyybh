@@ -91,9 +91,8 @@ function createWindow(): void {
     }
   });
 
-  window.on("minimize", (event) => {
-    event.preventDefault();
-    window.hide();
+  window.on("minimize", () => {
+  window.hide();
   });
 
   window.on("closed", () => {
