@@ -6,13 +6,14 @@ on:
       - main
     paths:
       - "UserScript/**"
+      - ".github/scripts/**"
       - ".github/workflows/release.yml"
     tags:
       - "v*"
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Release tag (e.g. v1.3.0)"
+        description: "Release tag and client version (vX.Y.Z, e.g. v1.3.1)"
         required: true
 
 permissions:
@@ -33,6 +34,7 @@ jobs:
     outputs:
       script_version: ${{ steps.version.outputs.script_version }}
       tag: ${{ steps.meta.outputs.tag }}
+      app_version: ${{ steps.meta.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,12 +53,12 @@ jobs:
 
       - name: Resolve tag
         id: meta
-        run: |
-          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-            echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=${{ github.event.inputs.tag_name }}" >> "$GITHUB_OUTPUT"
-          fi
+        env:
+          INPUT_TAG: ${{ inputs.tag_name }}
+        run: node .github/scripts/release-version.cjs
+
+      - name: Test release version handling
+        run: node --test .github/scripts/release-version.test.cjs
 
       - name: Install dependencies
         working-directory: UserScript
@@ -103,6 +105,11 @@ jobs:
         with:
           node-version: 22
 
+      - name: Set client version from release tag
+        env:
+          RELEASE_TAG: ${{ needs.userscript.outputs.tag }}
+        run: node .github/scripts/release-version.cjs --sync-electron
+
       - name: Install dependencies
         working-directory: ElectronApp
         run: npm install --no-audit --no-fund
@@ -114,6 +121,20 @@ jobs:
       - name: Build installer & portable (x64)
         working-directory: ElectronApp
         run: npm run build:win -- --x64
+
+      - name: Verify artifact versions
+        shell: pwsh
+        env:
+          APP_VERSION: ${{ needs.userscript.outputs.app_version }}
+        run: |
+          $expected = @(
+            "CTYunPCKeepAlive-electron-$env:APP_VERSION-x64-setup.exe",
+            "CTYunPCKeepAlive-electron-$env:APP_VERSION-x64-portable.exe"
+          )
+          $actual = @(Get-ChildItem ElectronApp/dist -Filter *.exe | Select-Object -ExpandProperty Name)
+          if (@(Compare-Object $expected $actual).Count -ne 0) {
+            throw "Artifact versions do not match release version $env:APP_VERSION. Actual: $($actual -join ', ')"
+          }
 
       - name: Upload assets to Release
         uses: softprops/action-gh-release@v2
